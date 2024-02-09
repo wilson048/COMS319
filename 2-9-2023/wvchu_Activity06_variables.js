@@ -18,7 +18,7 @@ console.log("Yes");
 console.log("Q2 ----------------");
 let var2 = "Ames";
 console.log(var2);
-let var2 = 124;
+var2 = 124;
 // Is it valid ?
 console.log("Not");
 
@@ -31,7 +31,7 @@ console.log("Valid ? Yes")
 
 console.log("Q4 ----------------");
 let var4;
-const var5;
+const var5 = 1;
 console.log("What's the error : Const is not given a value");
 
 console.log("Q5 ----------------");
@@ -39,11 +39,11 @@ const var6 = 3.1415;
 var6 = 2.8;
 console.log("What's the error : Can't change value of a const");
 
-let first name = "Abraham";
+let first_name = "Abraham";
 console.log(" Can't have a space in between variable name ");
-let 2numbers = [1,2];
+let numbers = [1,2];
 console.log("Can't use numbers at the start of a variable name");
-let city-state = "Ames Iowa";
+let citystate = "Ames Iowa";
 console.log(" Can't have a dash in beteween variable name ");
 
 let mainCity = "DesMoines";
