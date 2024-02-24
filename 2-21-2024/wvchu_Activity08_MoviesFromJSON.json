@@ -19,16 +19,16 @@
           "url": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/The_Iron_Giant_poster.JPG/220px-The_Iron_Giant_poster.JPG"
       },
       {
-        "movieId": "12345",
-        "title": "Harry Potter",
-        "year": 2001,
-        "url": "https://freepngimg.com/thumb/harry_potter/2-2-harry-potter-transparent.png"
-      },  
-      {
         "movieId": "BB124",
         "title": "Mulan",
         "year": 1998,
         "url": "https://freepngimg.com/thumb/disney/113364-picture-mulan-disney-free-photo.png"
-    }
+      },
+      {
+        "movieId": "12345",
+        "title": "Harry Potter",
+        "year": 2001,
+        "url": "https://freepngimg.com/thumb/harry_potter/2-2-harry-potter-transparent.png"
+      }
   ]
 }
