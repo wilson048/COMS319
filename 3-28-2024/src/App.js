@@ -53,6 +53,7 @@ const render_products = (ProductsCategory) => {
 const App = () => {
   console.log("Step 1 : load Products in a useState.");
   const [ProductsCategory, setProductsCategory] = useState(Products);
+  const [query, setQuery] = useState("");
 
   function handleClick(tag) {
     console.log("Step 4 : in handleClick", tag);
@@ -62,6 +63,23 @@ const App = () => {
     // ProductsCategory = filtered;
     console.log("Step 5 : ", Products.length, ProductsCategory.length);
   }
+
+  const handleChange = (e) => {
+    setQuery(e.target.value);
+    console.log(
+      "Step 6 : in handleChange, Target Value :",
+      e.target.value,
+      " Query Value :",
+      query
+    );
+    const results = Products.filter((eachProduct) => {
+      if (e.target.value === "") return ProductsCategory;
+      return eachProduct.title
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
+    setProductsCategory(results);
+  };
 
   return (
     <div className="flex fixed flex-row">
@@ -96,6 +114,17 @@ const App = () => {
               </button>
             ))}
           </div>
+        </div>
+        <div className="py-10">
+          <input
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
+focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
+dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            type="search"
+            value={query}
+            onChange={handleChange}
+          />
         </div>
       </div>
       <div className="ml-5 p-10 xl:basis-4/5">
