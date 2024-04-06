@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import items from "./products.json";
-const Shop = () => {
+function Shop() {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
 
@@ -116,5 +116,5 @@ const Shop = () => {
       </div>
     </div>
   );
-};
+}
 export default Shop;
