@@ -20,14 +20,20 @@ function App() {
 
   const handleChange = (e) => {
     setQuery(e.target.value);
+    if (e.target.value === "") {
+      setViewProducts(items);
+    }
     // console.log(
     //   "Step 6 : in handleChange, Target Value :",
     //   e.target.value,
     //   " Query Value :",
     //   query
     // );
+  };
+
+  const filterProducts = (e) => {
     const results = items.filter((eachProduct) => {
-      if (e.target.value === "") return viewProducts;
+      // if (e.target.value === "") return viewProducts;
       return eachProduct.title
         .toLowerCase()
         .includes(e.target.value.toLowerCase());
@@ -35,175 +41,91 @@ function App() {
     setViewProducts(results);
   };
 
-  function Shop() {
-    const listItems = items.map((el) => (
-      // PRODUCT
-      <div class="row border-top border-bottom" key={el.id}>
-        <div class="row main align-items-center">
-          {/* <div class="col">
-            <div class="card shadow-sm">
-              <svg
-                class="bd-placeholder-img card-img-top"
-                width="100%"
-                height="225"
-                xmlns="http://www.w3.org/2000/svg"
-                role="img"
-                aria-label="Placeholder: Thumbnail"
-                preserveAspectRatio="xMidYMid slice"
-                focusable="false"
-              >
-                <title>Placeholder</title>
-                <rect width="100%" height="100%" fill="#55595c" />
-                <text x="50%" y="50%" fill="#eceeef" dy=".3em">
-                  Thumbnail
-                </text>
-              </svg>
-              <div class="card-body">
-                <p class="card-text">
-                  This is a wider card with supporting text below as a natural
-                  lead-in to additional content. This content is a little bit
-                  longer.
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="btn-group">
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-outline-secondary"
-                    >
-                      View
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-sm btn-outline-secondary"
-                    >
-                      Edit
-                    </button>
-                  </div>
-                  <small class="text-body-secondary">9 mins</small>
-                </div>
-              </div>
-            </div>
-          </div> */}
-          <div class="col-2">
-            <img class="img-fluid" src={el.image} />
-          </div>
-          <div class="col">
-            <div class="row text-muted">{el.title}</div>
-            <div class="row">{el.category}</div>
-          </div>
-          <div class="col">
-            <button
-              type="button"
-              variant="light"
-              class="btn btn-sm btn-outline-secondary"
-              onClick={() => removeFromCart(el)}
-            >
-              {" "}
-              -{" "}
-            </button>{" "}
-            <button
-              type="button"
-              variant="light"
-              class="btn btn-sm btn-outline-secondary"
-              onClick={() => addToCart(el)}
-            >
-              {" "}
-              +{" "}
-            </button>
-          </div>
-          <div class="col">
-            ${el.price} <span class="close">&#10005;</span>
-            {howManyofThis(el.id)}
-          </div>
-        </div>
-      </div>
-    ));
+  const addToCart = (el) => {
+    setCart([...cart, el]);
+  };
 
-    const addToCart = (el) => {
-      setCart([...cart, el]);
-    };
-
-    //   const removeFromCart = (el) => {
-    //     let hardCopy = [...cart];
-    //     hardCopy = hardCopy.filter((cartItem) => cartItem.id !== el.id);
-    //     setCart(hardCopy);
-    //   };
-
-    const removeFromCart = (el) => {
-      let itemFound = false;
-      const updatedCart = cart.filter((cartItem) => {
-        if (cartItem.id === el.id && !itemFound) {
-          itemFound = true;
-          return false;
-        }
-        return true;
-      });
-      if (itemFound) {
-        setCart(updatedCart);
+  const removeFromCart = (el) => {
+    let itemFound = false;
+    const updatedCart = cart.filter((cartItem) => {
+      if (cartItem.id === el.id && !itemFound) {
+        itemFound = true;
+        return false;
       }
-    };
-
-    function howManyofThis(id) {
-      let hmot = cart.filter((cartItem) => cartItem.id === id);
-      return hmot.length;
+      return true;
+    });
+    if (itemFound) {
+      setCart(updatedCart);
     }
+  };
 
-    const cartItems = cart.map((el) => (
-      <div key={el.id}>
-        <img class="img-fluid" src={el.image} width={150} />
-        {el.title}${el.price}
-      </div>
-    ));
+  function howManyofThis(id) {
+    let hmot = cart.filter((cartItem) => cartItem.id === id);
+    return hmot.length;
+  }
 
-    const total = () => {
-      let totalVal = 0;
-      for (let i = 0; i < cart.length; i++) {
-        totalVal += cart[i].price;
-      }
-      setCartTotal(totalVal);
-    };
+  const cartItems = cart.map((el) => (
+    <div key={el.id}>
+      <img class="img-fluid" src={el.image} width={150} />
+      {el.title}${el.price}
+    </div>
+  ));
 
-    useEffect(() => {
-      total();
-    }, [cart]);
+  const total = () => {
+    let totalVal = 0;
+    for (let i = 0; i < cart.length; i++) {
+      totalVal += cart[i].price;
+    }
+    setCartTotal(totalVal);
+  };
 
-    return (
-      <div>
-        STORE SE/ComS319
-        <div class="card">
-          <div class="row">
-            {/* HERE, IT IS THE SHOPING CART */}
-            <div class="col-md-8 cart">
-              <div class="title">
-                <div class="row">
-                  <div class="col"></div>
-                  <input
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
-focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
-dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    type="search"
-                    value={query}
-                    onChange={handleChange}
-                  />
-                  <div class="col align-self-center text-right text-muted">
-                    Products selected {cart.length}
-                  </div>
-                </div>
-              </div>
-              <div>{listItems}</div>
-            </div>
-            <div class="float-end">
-              <p class="mb-0 me-5 d-flex align-items-center">
-                <span class="small text-muted me-2">Order total:</span>
-                <span class="lead fw-normal">${cartTotal}</span>
-              </p>
-            </div>
-          </div>
+  const toPaymentScreen = () => {
+    setViewer(1);
+    // setDataF({});
+  };
+
+  useEffect(() => {
+    total();
+  }, [cart]);
+
+  const listItems = viewProducts.map((el) => (
+    // PRODUCT
+    <div class="row border-top border-bottom" key={el.id}>
+      <div class="row main align-items-center">
+        <div class="col-2">
+          <img class="img-fluid" src={el.image} />
+        </div>
+        <div class="col">
+          <div class="row text-muted">{el.title}</div>
+          <div class="row">{el.category}</div>
+        </div>
+        <div class="col">
+          <button
+            type="button"
+            variant="light"
+            class="btn btn-sm btn-outline-secondary"
+            onClick={() => removeFromCart(el)}
+          >
+            {" "}
+            -{" "}
+          </button>{" "}
+          <button
+            type="button"
+            variant="light"
+            class="btn btn-sm btn-outline-secondary"
+            onClick={() => addToCart(el)}
+          >
+            {" "}
+            +{" "}
+          </button>
+        </div>
+        <div class="col">
+          ${el.price.toFixed(2)}, Quantity: <span> </span>
+          {howManyofThis(el.id)}
         </div>
       </div>
-    );
-  }
+    </div>
+  ));
 
   function Summary() {
     const updateHooks = () => {
@@ -232,9 +154,12 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
       console.log(data.fullName); // log only fullname
       // update hooks
       setDataF(data);
-      setViewer(1);
+      setViewer(2);
     };
 
+    const onCancel = () => {
+      setViewer(0);
+    };
     return (
       <div>
         <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
@@ -308,7 +233,14 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
             {errors.zip && <p className="text-danger"> Zip is required.</p>}
           </div>
-          <button type="submit" className="btn btn-primary">
+          <button
+            onClick={onCancel}
+            type="submit"
+            className="btn btn-secondary"
+          >
+            Cancel
+          </button>
+          <button onClick={onSubmit} type="submit" className="btn btn-primary">
             Submit
           </button>
         </form>
@@ -318,7 +250,64 @@ dark:focus:ring-blue-500 dark:focus:border-blue-500"
 
   return (
     <div>
-      {viewer === 0 && <Shop />}
+      {viewer === 0 && (
+        <div>
+          <div class="card">
+            <div class="row">
+              {/* HERE, IT IS THE SHOPING CART */}
+              <div class="col-md-11 cart">
+                <div class="title">
+                  <div class="row">
+                    <div class="col"></div>
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                      }}
+                      class="d-flex"
+                      role="search"
+                      id="searchbar"
+                    >
+                      <input
+                        class="form-control me-2"
+                        type="search"
+                        placeholder="Search"
+                        aria-label="Search"
+                        value={query}
+                        onChange={handleChange}
+                      ></input>
+                      <button
+                        value={query}
+                        onClick={filterProducts}
+                        class="btn btn-outline-success my-2"
+                        type="submit"
+                      >
+                        Search
+                      </button>
+                      <button
+                        value={query}
+                        onClick={toPaymentScreen}
+                        class="btn btn-primary my-2"
+                        type="submit"
+                        style={{ whiteSpace: "nowrap" }}
+                      >
+                        Cart ${cartTotal.toFixed(2)} ({cart.length})
+                      </button>
+                    </form>
+                    {/* <div class="col">Products selected {cart.length}</div> */}
+                  </div>
+                </div>
+                <div id="catalogue">{listItems}</div>
+              </div>
+              <div class="float-end">
+                <p class="mb-0 me-5 d-flex align-items-center">
+                  <span class="small text-muted me-2">Order total:</span>
+                  <span class="lead fw-normal">${cartTotal.toFixed(2)}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {viewer === 1 && <Payment />}
       {viewer === 2 && <Summary />}
     </div>
