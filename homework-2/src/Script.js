@@ -67,6 +67,25 @@ function App() {
     return hmot.length;
   }
 
+  const onSubmit = (data) => {
+    if (
+      data.creditCard.length != 16 ||
+      data.zip.length != 5 ||
+      isNaN(data.creditCard) ||
+      isNaN(data.zip)
+    ) {
+      return;
+    }
+    if (data.creditCard)
+      // update hooks
+      setDataF(data);
+    setViewer(2);
+  };
+
+  const onCancel = () => {
+    setViewer(0);
+  };
+
   const cartItems = items.map((el) =>
     howManyofThis(el.id) > 0 ? (
       viewer === 1 ? (
@@ -225,121 +244,11 @@ function App() {
     );
   }
 
-  function Payment() {
-    const onSubmit = (data) => {
-      if (
-        data.creditCard.length != 16 ||
-        data.zip.length != 5 ||
-        isNaN(data.creditCard) ||
-        isNaN(data.zip)
-      ) {
-        return;
-      }
-      if (data.creditCard)
-        // update hooks
-        setDataF(data);
-      setViewer(2);
-    };
+  // function Payment() {
+  //   return (
 
-    const onCancel = () => {
-      setViewer(0);
-    };
-
-    return (
-      <div>
-        <div>{cartItems}</div>
-        <div class="float-end">
-          <p class="mb-0 me-5 d-flex align-items-center">
-            <span class="small text-muted me-2">Order total:</span>
-            <span class="lead fw-normal">${cartTotal.toFixed(2)}</span>
-          </p>
-        </div>
-
-        <div class="float-end"></div>
-        <form onSubmit={handleSubmit(onCancel)} className="container mt-5">
-          <button onClick={onCancel} className="btn btn-secondary">
-            Return
-          </button>
-        </form>
-
-        <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
-          <div className="form-group">
-            <input
-              div
-              {...register("fullName", { required: true })}
-              placeholder="Full Name"
-              className="form-control"
-            />
-            {errors.fullName && (
-              <p className="text-danger">Full Name is required.</p>
-            )}
-          </div>
-          <div className="form-group">
-            <input
-              {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
-              placeholder="Email"
-              className="form-control"
-            />
-            {errors.email && <p className="text-danger">Email is required.</p>}
-          </div>
-          <div className="form-group">
-            <input
-              {...register("creditCard", { required: true })}
-              placeholder="Credit Card"
-              className="form-control"
-            />
-            {errors.creditCard && (
-              <p className="text-danger">Credit Card is required.</p>
-            )}
-          </div>
-          <div className="form-group">
-            <input
-              {...register("address", { required: true, pattern: "[0-9]{16}" })}
-              placeholder="Address"
-              className="form-control"
-            />
-            {errors.address && (
-              <p className="text-danger">Address is required.</p>
-            )}
-          </div>
-          <div className="form-group">
-            <input
-              {...register("address2")}
-              placeholder="Address 2"
-              className="form-control"
-            />
-          </div>
-          <div className="form-group">
-            <input
-              {...register("city", { required: true })}
-              placeholder="City"
-              className="form-control"
-            />
-            {errors.city && <p className="text-danger">City is required.</p>}
-          </div>
-          <div className="form-group">
-            <input
-              {...register("state", { required: true })}
-              placeholder="State"
-              className="form-control"
-            />
-            {errors.state && <p className="text-danger">State is required.</p>}
-          </div>
-          <div className="form-group">
-            <input
-              {...register("zip", { required: true, pattern: "[0-9]{5}" })}
-              placeholder="Zip"
-              className="form-control"
-            />
-            {errors.zip && <p className="text-danger"> Zip is required.</p>}
-          </div>
-          <button type="submit" className="btn btn-primary">
-            Order
-          </button>
-        </form>
-      </div>
-    );
-  }
+  //   );
+  // }
 
   return (
     <div>
@@ -401,7 +310,110 @@ function App() {
           </div>
         </div>
       )}
-      {viewer === 1 && <Payment />}
+      {viewer === 1 && (
+        <div>
+          <div>{cartItems}</div>
+          <div class="float-end">
+            <p class="mb-0 me-5 d-flex align-items-center">
+              <span class="small text-muted me-2">Order total:</span>
+              <span class="lead fw-normal">${cartTotal.toFixed(2)}</span>
+            </p>
+          </div>
+
+          <div class="float-end"></div>
+          <form onSubmit={handleSubmit(onCancel)} className="container mt-5">
+            <button onClick={onCancel} className="btn btn-secondary">
+              Return
+            </button>
+          </form>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
+            <div className="form-group">
+              <input
+                div
+                {...register("fullName", { required: true })}
+                placeholder="Full Name"
+                className="form-control"
+              />
+              {errors.fullName && (
+                <p className="text-danger">Full Name is required.</p>
+              )}
+            </div>
+            <div className="form-group">
+              <input
+                {...register("email", {
+                  required: true,
+                  pattern: /^\S+@\S+$/i,
+                })}
+                placeholder="Email"
+                className="form-control"
+              />
+              {errors.email && (
+                <p className="text-danger">Email is required.</p>
+              )}
+            </div>
+            <div className="form-group">
+              <input
+                {...register("creditCard", { required: true })}
+                placeholder="Credit Card"
+                className="form-control"
+              />
+              {errors.creditCard && (
+                <p className="text-danger">Credit Card is required.</p>
+              )}
+            </div>
+            <div className="form-group">
+              <input
+                {...register("address", {
+                  required: true,
+                  pattern: "[0-9]{16}",
+                })}
+                placeholder="Address"
+                className="form-control"
+              />
+              {errors.address && (
+                <p className="text-danger">Address is required.</p>
+              )}
+            </div>
+            <div className="form-group">
+              <input
+                {...register("address2")}
+                placeholder="Address 2"
+                className="form-control"
+              />
+            </div>
+            <div className="form-group">
+              <input
+                {...register("city", { required: true })}
+                placeholder="City"
+                className="form-control"
+              />
+              {errors.city && <p className="text-danger">City is required.</p>}
+            </div>
+            <div className="form-group">
+              <input
+                {...register("state", { required: true })}
+                placeholder="State"
+                className="form-control"
+              />
+              {errors.state && (
+                <p className="text-danger">State is required.</p>
+              )}
+            </div>
+            <div className="form-group">
+              <input
+                {...register("zip", { required: true, pattern: "[0-9]{5}" })}
+                placeholder="Zip"
+                className="form-control"
+              />
+              {errors.zip && <p className="text-danger"> Zip is required.</p>}
+            </div>
+            <button type="submit" className="btn btn-primary">
+              Order
+            </button>
+          </form>
+        </div>
+      )}
       {viewer === 2 && <Summary />}
     </div>
   );
