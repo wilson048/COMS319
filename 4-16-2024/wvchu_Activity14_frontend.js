@@ -23,7 +23,9 @@ function loadMovies(myMovies) {
         <div id=${card} class="card shadow-sm">
         <img src=${img} class="card-img-top" alt="..."></img>
             <div class="card-body">
-                <p class="card-text"> <strong>${title}</strong>, ${year}</p>
+                <p class="card-text"> <strong>${
+                  i + 1
+                } ${title}</strong>, $${year}</p>
                 <div class="d-flex justify-content-between align-items-center">
                     <small class="text-body-secondary">${description}</small>
                 </div>
@@ -75,9 +77,16 @@ function getInputValue() {
         console.log("Title " + i + ": " + title + " Year: " + year);
 
         let div = document.createElement("div");
-        div.innerHTML = `<h3> ${title} </h3>
-                <br> Year: ${year} 
-                <br> <img src = ${img} width="200"> <br> <br> <h3>${description}</h3>`;
+        div.innerHTML = `
+        <div class="card shadow-sm">
+        <img src=${img} class="card-img-top" alt="..."></img>
+            <div class="card-body">
+                <p class="card-text"> <strong> ${title}</strong>, $${year}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-body-secondary">${description}</small>
+                </div>
+            </div>
+        </div>`;
         mainContainer.appendChild(div);
       }
     }
