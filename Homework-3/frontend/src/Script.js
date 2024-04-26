@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import items from "./products.json";
 import "bootstrap/dist/css/bootstrap.css";
 
 import "./App.css";
@@ -16,233 +15,228 @@ function App() {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
   const [query, setQuery] = useState("");
-  const [viewProducts, setViewProducts] = useState(items);
 
-  const handleChange = (e) => {
-    setQuery(e.target.value);
-    if (e.target.value === "") {
-      setViewProducts(items);
-    }
-    // console.log(
-    //   "Step 6 : in handleChange, Target Value :",
-    //   e.target.value,
-    //   " Query Value :",
-    //   query
-    // );
-  };
+  // fetch("http://localhost:8081/listProducts")
+  //   .then((response) => response.json())
+  //   .then((myProducts) => loadProducts(myProducts));
 
-  const filterProducts = (e) => {
-    const results = items.filter((eachProduct) => {
-      // if (e.target.value === "") return viewProducts;
-      return eachProduct.title
-        .toLowerCase()
-        .includes(e.target.value.toLowerCase());
-    });
-    setViewProducts(results);
-  };
+  // function loadProducts(myProducts) {
+  //   var mainContainer = document.getElementById("col");
+  //   var checkBoxes = [];
+  //   var cards = [];
+  //   for (var i = 0; i < myProducts.length; i++) {
+  //     let title = myProducts[i].name;
+  //     let year = myProducts[i].price;
+  //     let img = myProducts[i].image;
+  //     let description = myProducts[i].description;
+  //     let rate = myProducts[i].rating.rate;
+  //     let count = myProducts[i].rating.count;
+  //     let id = myProducts[i].id;
 
-  const addToCart = (el) => {
-    setCart([...cart, el]);
-  };
+  //     let checkbox = "checkbox" + i.toString();
+  //     let card = "card" + i.toString();
 
-  const removeFromCart = (el) => {
-    let itemFound = false;
-    const updatedCart = cart.filter((cartItem) => {
-      if (cartItem.id === el.id && !itemFound) {
-        itemFound = true;
-        return false;
-      }
-      return true;
-    });
-    if (itemFound) {
-      setCart(updatedCart);
-      if (cart.length === 0) {
-        setViewer(0);
-      }
-    }
-  };
+  //     console.log("Title " + i + ": " + title + " Year: " + year);
 
-  function howManyofThis(id) {
-    let hmot = cart.filter((cartItem) => cartItem.id === id);
-    return hmot.length;
-  }
+  //     let div = document.createElement("div");
+  //     div.id = id;
 
-  const onSubmit = (data) => {
-    if (
-      data.creditCard.length != 16 ||
-      data.zip.length != 5 ||
-      isNaN(data.creditCard) ||
-      isNaN(data.zip)
-    ) {
-      return;
-    }
-    if (data.creditCard)
-      // update hooks
-      setDataF(data);
-    setViewer(2);
-  };
+  //     div.innerHTML = `<input type="checkbox" class="form-check-input" checked>
+  //       <label for=${checkbox} class="form-check-label">Show Image ${id}</label>
+  //       <div id=${card} class="card shadow-sm">
+  //       <img src=${img} class="card-img-top" alt="..."></img>
+  //           <div class="card-body">
+  //               <p class="card-text"> <strong>${id} ${title}</strong>, $${year}</p>
+  //               <div class="d-flex justify-content-between align-items-center">
+  //                   <small class="text-body-secondary">${description}</small>
+  //               </div>
+  //           </div>
+  //       </div>`;
+  //     mainContainer.appendChild(div);
 
-  const onCancel = () => {
-    setViewer(0);
-  };
+  //     let cbox = document.getElementById(checkbox);
+  //     checkBoxes.push(cbox);
+  //     let ccard = document.getElementById(card);
+  //     cards.push(ccard);
 
-  const cartItems = items.map((el) =>
-    howManyofThis(el.id) > 0 ? (
-      viewer === 1 ? (
-        <div class="row border-top border-bottom" key={el.id}>
-          <div class="row main align-items-center">
-            <div class="col-2">
-              <img
-                style={{ maxHeight: "100px" }}
-                class="img-fluid"
-                src={el.image}
-              />
-            </div>
-            <div class="col">
-              <div class="row text-muted">{el.title}</div>
-              <div class="row">{el.category}</div>
-            </div>
-            <div class="col">
-              <button
-                type="button"
-                variant="light"
-                class="btn btn-sm btn-outline-secondary"
-                onClick={() => removeFromCart(el)}
-              >
-                {" "}
-                -{" "}
-              </button>{" "}
-              <button
-                type="button"
-                variant="light"
-                class="btn btn-sm btn-outline-secondary"
-                onClick={() => addToCart(el)}
-              >
-                {" "}
-                +{" "}
-              </button>
-            </div>
-            <div class="col">
-              ${el.price.toFixed(2)}, Quantity: <span> </span>
-              {howManyofThis(el.id)} = $
-              {(howManyofThis(el.id) * el.price).toFixed(2)}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div class="row border-top border-bottom" key={el.id}>
-          <div class="row main align-items-center">
-            <div class="col-2">
-              <img
-                style={{ maxHeight: "100px" }}
-                class="img-fluid"
-                src={el.image}
-              />
-            </div>
-            <div class="col">
-              <div class="row text-muted">{el.title}</div>
-              <div class="row">{el.category}</div>
-            </div>
-            <div class="col">
-              ${el.price.toFixed(2)}, Quantity: <span> </span>
-              {howManyofThis(el.id)} = $
-              {(howManyofThis(el.id) * el.price).toFixed(2)}
-            </div>
-          </div>
-        </div>
-      )
-    ) : (
-      <div></div>
-    )
-  );
+  //     console.log(checkbox);
+  //     console.log(card);
+  //   }
+  //   console.log(checkBoxes);
+  //   console.log(cards);
 
-  const total = () => {
-    let totalVal = 0;
-    for (let i = 0; i < cart.length; i++) {
-      totalVal += cart[i].price;
-    }
-    setCartTotal(totalVal);
-  };
+  //   checkBoxes.forEach((checkBoxParam, index) => {
+  //     console.log(index);
+  //     checkBoxParam.addEventListener("change", () => {
+  //       if (checkBoxParam.checked) {
+  //         cards[index].style.display = "block"; // Show the card
+  //       } else {
+  //         cards[index].style.display = "none"; // Hide the card
+  //       }
+  //     });
+  //   });
+  // }
 
-  const toPaymentScreen = () => {
-    if (cart.length === 0) {
-      return;
-    }
-    setViewer(1);
-    // setDataF({});
-  };
+  // function getInputValue() {
+  //   let movieName = document.forms["my_form"]["inputMovieName"];
+  //   let inputMovieName = movieName.value;
 
-  useEffect(() => {
-    total();
-  }, [cart]);
+  //   fetch("http://localhost:8081/listProducts")
+  //     .then((response) => response.json())
+  //     .then((myProducts) => loadProducts(myProducts));
 
-  const listItems = viewProducts.map((el) => (
-    // PRODUCT
-    <div class="row border-top border-bottom" key={el.id}>
-      <div class="row main align-items-center">
-        <div class="col-2">
-          <img class="img-fluid" src={process.env.PUBLIC_URL + el.image} />
-        </div>
-        <div class="col">
-          <div class="row text-muted">{el.title}</div>
-          <div class="row text-muted">{el.description}</div>
-          <div class="row">{el.category}</div>
-        </div>
-        <div class="col">
-          <button
-            type="button"
-            variant="light"
-            class="btn btn-sm btn-outline-secondary"
-            onClick={() => removeFromCart(el)}
-          >
-            {" "}
-            -{" "}
-          </button>{" "}
-          <button
-            type="button"
-            variant="light"
-            class="btn btn-sm btn-outline-secondary"
-            onClick={() => addToCart(el)}
-          >
-            {" "}
-            +{" "}
-          </button>
-        </div>
-        <div class="col">
-          ${el.price.toFixed(2)}, Quantity: <span> </span>
-          {howManyofThis(el.id)}
-        </div>
-      </div>
-    </div>
-  ));
+  //   function loadProducts(myProducts) {
+  //     var mainContainer = document.getElementById("col");
 
-  function Summary() {
-    const updateHooks = () => {
-      setViewer(0);
-      setDataF({});
-      setCart([]);
-    };
-    return (
-      <div>
-        <h1>Payment summary:</h1>
-        <h2>Total: ${cartTotal.toFixed(2)}</h2>
-        <h3>Name: {dataF.fullName}</h3>
-        <p>Email {dataF.email}</p>
-        <p>
-          Shipping Address: {dataF.city}, {dataF.state} {dataF.zip}{" "}
-        </p>
-        <p>
-          Card ending in{" "}
-          {dataF.creditCard.substring(12, dataF.creditCard.length)}
-        </p>
-        <div>{cartItems}</div>
+  //     for (var i = 0; i < myProducts.length; i++) {
+  //       let title = myProducts[i].name;
+  //       let year = myProducts[i].price;
+  //       let img = myProducts[i].image;
+  //       let description = myProducts[i].description;
+  //       let id = myProducts[i].id;
 
-        <button onClick={updateHooks} className="btn btn-secondary">
-          Continue Shopping
-        </button>
-      </div>
-    );
-  }
+  //       if (title == inputMovieName) {
+  //         console.log("Title " + i + ": " + title + " Year: " + year);
+
+  //         let div = document.createElement("div");
+  //         div.id = id;
+  //         div.innerHTML = `
+  //       <div class="card shadow-sm">
+  //       <img src=${img} class="card-img-top" alt="..."></img>
+  //           <div class="card-body">
+  //               <p class="card-text"> <strong> ${title}</strong>, $${year}</p>
+  //               <div class="d-flex justify-content-between align-items-center">
+  //                   <small class="text-body-secondary">${description}</small>
+  //               </div>
+  //           </div>
+  //       </div>`;
+  //         mainContainer.appendChild(div);
+  //       }
+  //     }
+  //   }
+  // }
+
+  // function addOneProduct() {
+  //   // Fetch the value from the input field
+  //   let id = Number(document.getElementById("addProductId").value);
+  //   let name = document.getElementById("addProductName").value;
+  //   let description = document.getElementById("addProductDescription").value;
+  //   let price = Number(document.getElementById("addProductPrice").value);
+  //   let image = document.getElementById("addProductURL").value;
+  //   console.log(id);
+  //   fetch(`http://localhost:8081/addProduct`, {
+  //     method: "POST",
+  //     headers: { "content-type": "application/json" },
+  //     body: JSON.stringify({
+  //       id: id,
+  //       name: name,
+  //       price: price,
+  //       description: description,
+  //       image: image,
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((addThisProduct) => {
+  //       addOneProductById({
+  //         id: id,
+  //         name: name,
+  //         price: price,
+  //         description: description,
+  //         image: image,
+  //       });
+  //     });
+  // }
+
+  // function addOneProductById(json) {
+  //   let title = json.name;
+  //   let year = json.price;
+  //   let img = json.image;
+  //   let description = json.description;
+  //   let id = json.id;
+
+  //   var mainContainer = document.getElementById("col");
+  //   let div = document.createElement("div");
+  //   div.id = id;
+  //   div.innerHTML = `
+  //       <div class="card shadow-sm">
+  //       <img src=${img} class="card-img-top" alt="..."></img>
+  //           <div class="card-body">
+  //               <p class="card-text"> <strong> ${title}</strong>, $${year}</p>
+  //               <div class="d-flex justify-content-between align-items-center">
+  //                   <small class="text-body-secondary">${description}</small>
+  //               </div>
+  //           </div>
+  //       </div>`;
+  //   mainContainer.appendChild(div);
+  // }
+
+  // function deleteOneProduct() {
+  //   // Fetch the value from the input field
+  //   let id = document.getElementById("deleteProductById").value;
+  //   console.log(id);
+  //   fetch(`http://localhost:8081/deleteProduct/${id}`, {
+  //     method: "DELETE",
+  //     headers: { "content-type": "application/json" },
+  //     body: JSON.stringify({ id: id }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then(() => {
+  //       deleteOneProductById(id);
+  //     });
+  // }
+
+  // function deleteOneProductById(id) {
+  //   let thingToRemove = document.getElementById(id);
+  //   var mainContainer = document.getElementById("col");
+  //   mainContainer.removeChild(thingToRemove);
+  // }
+  // function updateOneProduct() {
+  //   // Fetch the value from the input field
+  //   let id = Number(document.getElementById("updateProductById").value);
+  //   let price = Number(document.getElementById("updateProductPrice").value);
+  //   console.log(id);
+  //   fetch(`http://localhost:8081/updateProduct/${id}`, {
+  //     method: "PUT",
+  //     headers: { "content-type": "application/json" },
+  //     body: JSON.stringify({
+  //       id: 5,
+  //       name: "Product Abraham ALDACO-GASTELUM",
+  //       price: price,
+  //       description: "I Product is one example of an image for my exercise",
+  //       image: "https://robohash.org/Abraham",
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then(() => {
+  //       updateOneProductById({
+  //         id: 5,
+  //         name: "Product Abraham ALDACO-GASTELUM",
+  //         price: price,
+  //         description: "I Product is one example of an image for my exercise",
+  //         image: "https://robohash.org/Abraham",
+  //       });
+  //     });
+  // }
+
+  // function updateOneProductById(json) {
+  //   let thingToRemove = document.getElementById(json.id);
+  //   var mainContainer = document.getElementById("col");
+  //   mainContainer.removeChild(thingToRemove);
+
+  //   let thingToUpdate = document.createElement("div");
+  //   thingToUpdate.id = json.id;
+  //   thingToUpdate.innerHTML = `
+  //       <div class="card shadow-sm">
+  //       <img src=${json.image} class="card-img-top" alt="..."></img>
+  //           <div class="card-body">
+  //               <p class="card-text"> <strong> ${json.name}</strong>, $${json.price}</p>
+  //               <div class="d-flex justify-content-between align-items-center">
+  //                   <small class="text-body-secondary">${json.description}</small>
+  //               </div>
+  //           </div>
+  //       </div>`;
+  //   mainContainer.appendChild(thingToUpdate);
+  // }
 
   // function Payment() {
   //   return (
@@ -252,169 +246,62 @@ function App() {
 
   return (
     <div>
-      {viewer === 0 && (
-        <div>
-          <div class="card">
-            <div class="row">
-              {/* HERE, IT IS THE SHOPING CART */}
-              <div class="col-md-11 cart">
-                <div class="title">
-                  <div class="row">
-                    <div class="col"></div>
-                    <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                      }}
-                      class="d-flex"
-                      role="search"
-                      id="searchbar"
-                    >
-                      <input
-                        class="form-control me-2"
-                        type="search"
-                        placeholder="Search"
-                        aria-label="Search"
-                        value={query}
-                        onChange={handleChange}
-                      ></input>
-                      <button
-                        value={query}
-                        onClick={filterProducts}
-                        class="btn btn-outline-success my-2"
-                        type="submit"
-                      >
-                        Search
-                      </button>
-                      <button
-                        value={query}
-                        onClick={toPaymentScreen}
-                        class="btn btn-primary my-2"
-                        type="submit"
-                        style={{ whiteSpace: "nowrap" }}
-                      >
-                        Cart ${cartTotal.toFixed(2)} ({cart.length})
-                      </button>
-                    </form>
-                    {/* <div class="col">Products selected {cart.length}</div> */}
-                  </div>
+      <nav
+        class="navbar navbar-expand navbar-dark bg-dark"
+        aria-label="Second navbar example"
+      >
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">
+            Fakestore Admin Webiste
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarsExample02"
+            aria-controls="navbarsExample02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarsExample02">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item">
+                <div class="d-lg-flex col-lg-3">
+                  <button class="btn btn-primary btn-square-md">View</button>
                 </div>
-                <div id="catalogue">{listItems}</div>
-              </div>
-              {/* <div class="float-end">
-                <p class="mb-0 me-5 d-flex align-items-center">
-                  <span class="small text-muted me-2">Order total:</span>
-                  <span class="lead fw-normal">${cartTotal.toFixed(2)}</span>
-                </p>
-              </div> */}
-            </div>
+              </li>
+              <li class="nav-item">
+                <div class="d-lg-flex col-lg-3">
+                  <button class="btn btn-success btn-square-md">Add</button>
+                </div>
+              </li>
+              <li class="nav-item">
+                <div class="d-lg-flex col-lg-3">
+                  <button class="btn btn-info btn-square-md">Update</button>
+                </div>
+              </li>
+              <li class="nav-item">
+                <div class="d-lg-flex col-lg-3">
+                  <button class="btn btn-danger btn-square-md">Delete</button>
+                </div>
+              </li>
+              <li class="nav-item">
+                <div class="d-lg-flex col-lg-3">
+                  <button class="btn btn-light btn-square-md">Authors</button>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
-      )}
-      {viewer === 1 && (
-        <div>
-          <div>{cartItems}</div>
-          <div class="float-end">
-            <p class="mb-0 me-5 d-flex align-items-center">
-              <span class="small text-muted me-2">Order total:</span>
-              <span class="lead fw-normal">${cartTotal.toFixed(2)}</span>
-            </p>
-          </div>
-
-          <div class="float-end"></div>
-          <form onSubmit={handleSubmit(onCancel)} className="container mt-5">
-            <button onClick={onCancel} className="btn btn-secondary">
-              Return
-            </button>
-          </form>
-
-          <form onSubmit={handleSubmit(onSubmit)} className="container mt-5">
-            <div className="form-group">
-              <input
-                div
-                {...register("fullName", { required: true })}
-                placeholder="Full Name"
-                className="form-control"
-              />
-              {errors.fullName && (
-                <p className="text-danger">Full Name is required.</p>
-              )}
-            </div>
-            <div className="form-group">
-              <input
-                {...register("email", {
-                  required: true,
-                  pattern: /^\S+@\S+$/i,
-                })}
-                placeholder="Email"
-                className="form-control"
-              />
-              {errors.email && (
-                <p className="text-danger">Email is required.</p>
-              )}
-            </div>
-            <div className="form-group">
-              <input
-                {...register("creditCard", { required: true })}
-                placeholder="Credit Card"
-                className="form-control"
-              />
-              {errors.creditCard && (
-                <p className="text-danger">Credit Card is required.</p>
-              )}
-            </div>
-            <div className="form-group">
-              <input
-                {...register("address", {
-                  required: true,
-                  pattern: "[0-9]{16}",
-                })}
-                placeholder="Address"
-                className="form-control"
-              />
-              {errors.address && (
-                <p className="text-danger">Address is required.</p>
-              )}
-            </div>
-            <div className="form-group">
-              <input
-                {...register("address2")}
-                placeholder="Address 2"
-                className="form-control"
-              />
-            </div>
-            <div className="form-group">
-              <input
-                {...register("city", { required: true })}
-                placeholder="City"
-                className="form-control"
-              />
-              {errors.city && <p className="text-danger">City is required.</p>}
-            </div>
-            <div className="form-group">
-              <input
-                {...register("state", { required: true })}
-                placeholder="State"
-                className="form-control"
-              />
-              {errors.state && (
-                <p className="text-danger">State is required.</p>
-              )}
-            </div>
-            <div className="form-group">
-              <input
-                {...register("zip", { required: true, pattern: "[0-9]{5}" })}
-                placeholder="Zip"
-                className="form-control"
-              />
-              {errors.zip && <p className="text-danger"> Zip is required.</p>}
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Order
-            </button>
-          </form>
-        </div>
-      )}
-      {viewer === 2 && <Summary />}
+      </nav>
+      {viewer === 0}
+      {viewer === 1}
+      {viewer === 2}
+      {viewer === 3}
+      {viewer === 4}
     </div>
   );
 }
