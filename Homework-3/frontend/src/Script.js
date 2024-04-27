@@ -17,13 +17,13 @@ function App() {
   const [cartTotal, setCartTotal] = useState(0);
   const [query, setQuery] = useState("");
 
-  async function viewProducts(isDelete) {
+  async function viewProducts(viewNum) {
     const response = await fetch("http://localhost:8081/listProducts");
     const myProducts = await response.json();
-    return loadProducts(myProducts, isDelete);
+    return loadProducts(myProducts, viewNum);
   }
 
-  function loadProducts(myProducts, isDelete) {
+  function loadProducts(myProducts, viewNum) {
     let mainContainer = document.getElementById("col");
     mainContainer.innerHTML = ``;
     mainContainer.className =
@@ -84,8 +84,51 @@ function App() {
       //           </div>
       //       </div>
       //   </div>`;
+      // Update Tab
+      if (viewNum === 2) {
+        // <input type="text" class="form-control" id="firstName" placeholder="" value="" required>
+        //       <div class="invalid-feedback">
+        //         Valid first name is required.
+        //       </div>
+        let input = document.createElement("input");
+        input.type = "number";
+        input.className = "form-control";
+        input.id = "Input-" + id;
+        input.placeholder = "New Price...";
 
-      if (isDelete) {
+        let btn = document.createElement("button");
+        btn.className = "btn btn-success btn-square-md";
+        btn.innerHTML = `Update`;
+        btn.addEventListener("click", () => {
+          let curId = id;
+          let curTitle = title;
+          if (isNaN(Number(document.getElementById("Input-" + id).value))) {
+            return;
+          }
+          let curPrice = Number(document.getElementById("Input-" + id).value);
+          let curDescription = description;
+          let curCategory = category;
+          let curImg = img;
+          let curRating = {
+            rate: rate,
+            count: count,
+          };
+          updateOneProduct({
+            id: curId,
+            title: curTitle,
+            price: curPrice,
+            description: curDescription,
+            category: curCategory,
+            image: curImg,
+            category: curCategory,
+            rating: curRating,
+          });
+        });
+        div.childNodes[1].appendChild(input);
+        div.childNodes[1].appendChild(btn);
+      }
+      // Delete Tab
+      if (viewNum === 3) {
         let btn = document.createElement("button");
         btn.className = "btn btn-danger btn-square-md";
         btn.innerHTML = `Delete`;
@@ -98,6 +141,22 @@ function App() {
 
       mainContainer.appendChild(div);
     }
+  }
+
+  function updateOneProduct(obj) {
+    // Fetch the value from the input field
+    let values = Object.values(obj);
+    let id = values[0];
+    console.log(id);
+    fetch(`http://localhost:8081/updateProduct/${id}`, {
+      method: "PUT",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(obj),
+    })
+      .then((response) => response.json())
+      .then(() => {
+        viewProducts(2);
+      });
   }
   function deleteOneProduct(id) {
     // Fetch the value from the input field
@@ -144,7 +203,7 @@ function App() {
                     class="btn btn-primary btn-square-md"
                     onClick={() => {
                       setViewer(0);
-                      viewProducts(false);
+                      viewProducts(0);
                     }}
                   >
                     View
@@ -165,7 +224,10 @@ function App() {
                 <div class="d-lg-flex col-lg-3">
                   <button
                     class="btn btn-info btn-square-md"
-                    onClick={() => setViewer(2)}
+                    onClick={() => {
+                      setViewer(2);
+                      viewProducts(2);
+                    }}
                   >
                     Update
                   </button>
@@ -177,7 +239,7 @@ function App() {
                     class="btn btn-danger btn-square-md"
                     onClick={() => {
                       setViewer(3);
-                      viewProducts(true);
+                      viewProducts(3);
                     }}
                   >
                     Delete
@@ -203,7 +265,7 @@ function App() {
       {/* Add Products */}
       {viewer === 1}
       {/* Update Products */}
-      {viewer === 2}
+      {viewer === 2 && <div id="col" class="container"></div>}
       {/* Delete Products */}
       {viewer === 3 && <div id="col" class="container"></div>}
       {/* Authors */}
