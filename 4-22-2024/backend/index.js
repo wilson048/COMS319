@@ -1,3 +1,7 @@
+// Author: Wilson Chu
+// ISU Netid : wvchu@iastate.edu
+// Date :  April 27, 2024
+
 const express = require("express");
 const db = require("./db.js");
 const cors = require("cors");
@@ -11,7 +15,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on ${PORT}`);
 });
 
-//Route to get all posts
 app.get("/catalog", async (req, res) => {
   try {
     const query = "SELECT * FROM fakestore_catalog";
@@ -30,6 +33,66 @@ app.get("/catalog/:id", async (req, res) => {
     // Read id from frontend
     const id = req.params.id;
     const query = "SELECT * FROM fakestore_catalog WHERE id = ?";
+    const [result] = await db.query(query, [id]); // Ensure to use array for parameters even if it's just one
+    console.log("Success in Reading MySQL");
+    res.status(200).send(result);
+  } catch (err) {
+    // If an error occurs, catch it and send an appropriate error response
+    console.error("Error in Reading MySQL :", err);
+    res.status(500).send({ error: "An error occurred while fetching items." });
+  }
+});
+
+app.get("/catalog/:category", async (req, res) => {
+  try {
+    // Read category from frontend
+    const category = req.params.category;
+    const query = "SELECT * FROM fakestore_catalog WHERE category = ?";
+    const [result] = await db.query(query, [category]); // Ensure to use array for parameters even if it's just one
+    console.log("Success in Reading MySQL");
+    res.status(200).send(result);
+  } catch (err) {
+    // If an error occurs, catch it and send an appropriate error response
+    console.error("Error in Reading MySQL :", err);
+    res.status(500).send({ error: "An error occurred while fetching items." });
+  }
+});
+
+app.post("/catalog", async (req, res) => {
+  try {
+    // Read category from frontend
+    const category = req.params.category;
+    const query =
+      "INSERT INTO fakestore_catalog VALUES (" +
+      req.params.id +
+      "," +
+      req.params.title +
+      "," +
+      req.params.price +
+      "," +
+      req.params.description +
+      "," +
+      req.params.category +
+      "," +
+      req.params.image +
+      "," +
+      req.params.rating +
+      ")";
+    const [result] = await db.query(query, [category]); // Ensure to use array for parameters even if it's just one
+    console.log("Success in Reading MySQL");
+    res.status(200).send(result);
+  } catch (err) {
+    // If an error occurs, catch it and send an appropriate error response
+    console.error("Error in Reading MySQL :", err);
+    res.status(500).send({ error: "An error occurred while fetching items." });
+  }
+});
+
+app.delete("/catalog/:id", async (req, res) => {
+  try {
+    // Read id from frontend
+    const id = req.params.id;
+    const query = "DELETE FROM fakestore_catalog WHERE id = ?";
     const [result] = await db.query(query, [id]); // Ensure to use array for parameters even if it's just one
     console.log("Success in Reading MySQL");
     res.status(200).send(result);
