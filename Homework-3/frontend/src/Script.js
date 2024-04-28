@@ -222,7 +222,7 @@ function App() {
     })
       .then((response) => response.json())
       .then(() => {
-        viewProducts(true);
+        viewProducts(3);
       });
   }
   function Authors() {
