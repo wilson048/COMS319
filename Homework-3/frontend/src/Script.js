@@ -102,7 +102,13 @@ function App() {
         btn.addEventListener("click", () => {
           let curId = id;
           let curTitle = title;
-          if (isNaN(Number(document.getElementById("Input-" + id).value))) {
+
+          if (
+            isNaN(Number(document.getElementById("Input-" + id).value)) ||
+            document.getElementById("Input-" + id).value == "" ||
+            document.getElementById("Input-" + id).value == null
+          ) {
+            alert("Fill in empty field with a number");
             return;
           }
           let curPrice = Number(document.getElementById("Input-" + id).value);
